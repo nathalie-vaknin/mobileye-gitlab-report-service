@@ -2,13 +2,13 @@
 A small read-only reporting service that integrates with the GitLab REST API v4
 and returns issues / merge requests created in a given year - either for a
 single project or across the entire GitLab instance (per token permissions).
-## Architecture
 
+## Architecture
 app/
   gitlab_client.py   # Talks to GitLab: auth, pagination, error mapping
   reports.py         # Task 1 & 2: get_issues_by_year / get_merge_requests_by_year
   main.py            # Task 3: FastAPI HTTP layer
-Dockerfile            # Task 4
+Dockerfile           # Task 4
 requirements.txt
 
 The design separates three layers:
@@ -16,6 +16,7 @@ The design separates three layers:
    auth headers, and pagination.
 2. **Business logic** (reports.py) - plain functions, no web framework involved.
 3. **Delivery** (main.py) - a thin HTTP adapter that calls into the business logic.
+
 ## Configuration
 The service is configured entirely through environment variables:
 | Variable       | Required | Description                                      |
@@ -24,6 +25,7 @@ The service is configured entirely through environment variables:
 | GITLAB_TOKEN | Yes      | Personal or project access token with read_api scope |
 If either variable is missing, the service fails with a 500 and a clear
 error message on the first request (see Error Handling below).
+
 ## Running locally (without Docker)
 bash
 pip install -r requirements.txt
@@ -41,7 +43,9 @@ docker run --rm -p 8080:8080 \
   gitlab_yrs
 
 The service is then available at http://localhost:8080.
+
 ## API Reference
+
 ### GET /health
 bash
 curl http://localhost:8080/health
@@ -72,6 +76,7 @@ curl "http://localhost:8080/merge-requests?year=2026&project=mygroup%2Fmy-projec
 > a massive public instance. Against a real company GitLab instance (fewer
 > projects) this is expected to work well. If GitLab itself times out, the
 > service returns 504 Gateway Timeout.
+
 ## Error Handling
 | Scenario                   | Status | Verified |
 |----------------------------|--------|----------|
