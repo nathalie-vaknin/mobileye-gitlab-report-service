@@ -4,11 +4,17 @@ and returns issues / merge requests created in a given year - either for a
 single project or across the entire GitLab instance (per token permissions).
 
 ## Architecture
+
 app/
+
   gitlab_client.py   # Talks to GitLab: auth, pagination, error mapping
+  
   reports.py         # Task 1 & 2: get_issues_by_year / get_merge_requests_by_year
+  
   main.py            # Task 3: FastAPI HTTP layer
+  
 Dockerfile           # Task 4
+
 requirements.txt
 
 The design separates three layers:
